@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2022-2023 Bruce A Henderson
+  Copyright (c) 2022-2024 Bruce A Henderson
   
   This software is provided 'as-is', without any express or implied
   warranty. In no event will the authors be held liable for any damages
@@ -33,6 +33,8 @@ extern int image_stb_TStbioCallbacks__Read(BBObject * cb, char * data,int size);
 extern void image_stb_TStbioCallbacks__Skip(BBObject * cb, int n);
 extern int image_stb_TStbioCallbacks__Eof(BBObject * cb);
 
+stbi_uc *bmx_stbi_load_gif_from_callbacks(stbi_io_callbacks const *clbk, void *user, int **delays, int *x, int *y, int *z, int *comp, int req_comp);
+
 stbi_uc * bmx_stbi_load_image(BBObject * cb, int * width, int * height, int * channels) {
 
 	stbi_io_callbacks callbacks;
@@ -50,9 +52,21 @@ stbi_uc * bmx_stbi_load_gif(BBObject * cb, int **delays, int *x, int *y, int *z,
 	callbacks.skip = image_stb_TStbioCallbacks__Skip;
 	callbacks.eof = image_stb_TStbioCallbacks__Eof;
 
-	return stbi_load_gif_from_callbacks(&callbacks, cb, delays, x, y, z, comp, req_comp);
+	return bmx_stbi_load_gif_from_callbacks(&callbacks, cb, delays, x, y, z, comp, req_comp);
 }
 
 void bmx_stbi_free_delays(int ** delays) {
    if (delays && *delays) STBI_FREE(*delays);
+}
+
+stbi_uc * bmx_stbi_load_gif_from_callbacks(stbi_io_callbacks const *clbk, void *user, int **delays, int *x, int *y, int *z, int *comp, int req_comp)
+{
+   unsigned char *result;
+   stbi__context s;
+   stbi__start_callbacks(&s, (stbi_io_callbacks *) clbk, user);
+   result = (unsigned char*) stbi__load_gif_main(&s, delays, x, y, z, comp, req_comp);
+   if (stbi__vertically_flip_on_load) {
+      stbi__vertical_flip_slices( result, *x, *y, *z, *comp );
+   }
+   return result;
 }
