@@ -1,4 +1,4 @@
-' Copyright (c) 2022-2023 Bruce A Henderson
+' Copyright (c) 2022-2024 Bruce A Henderson
 ' 
 ' This software is provided 'as-is', without any express or implied
 ' warranty. In no event will the authors be held liable for any damages
@@ -20,12 +20,16 @@ SuperStrict
 
 Module Image.STB
 
-ModuleInfo "Version: 1.05"
+ModuleInfo "Version: 1.06"
 ModuleInfo "Author: Sean Barrett and contributers (see stb_image.h)"
 ModuleInfo "License: ZLib/PNG License"
 ModuleInfo "Credit: Adapted for BlitzMax by Bruce A Henderson"
 
-ModuleInfo "History: 1.04"
+ModuleInfo "History: 1.06"
+ModuleInfo "History: Update to stb_image 2.30"
+ModuleInfo "History: Update to stb_image_resize2 2.10"
+ModuleInfo "History: Fixed gif build."
+ModuleInfo "History: 1.05"
 ModuleInfo "History: Update to stb_image 2.29"
 ModuleInfo "History: 1.04"
 ModuleInfo "History: Update to stb_image 2.28"
@@ -42,6 +46,8 @@ Import BRL.Pixmap
 
 Import "common.bmx"
 
+' Notes
+' stbi__compute_y_16() and stbi__convert_format16() need aditional  "&& defined(STBI_NO_PNM)"
 
 Private
 
