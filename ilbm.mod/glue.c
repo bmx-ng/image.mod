@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2022 Bruce A Henderson
+  Copyright (c) 2022-2025 Bruce A Henderson
  
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -27,9 +27,9 @@
 
 #include "brl.mod/blitz.mod/blitz.h"
 
-extern int image_ilbm_TIlbmIoCallbacks__Read(BBObject * cb, char * data,int size);
-extern int image_ilbm_TIlbmIoCallbacks__Write(BBObject * cb, char * data,int size);
-extern int image_ilbm_TIlbmIoCallbacks__Eof(BBObject * cb);
+extern int image_ilbm_TIlbmIoCallbacks__Read(void * cb, char * data,int size);
+extern int image_ilbm_TIlbmIoCallbacks__Write(void * cb, char * data,int size);
+extern int image_ilbm_TIlbmIoCallbacks__Eof(void * cb);
 
 IFF_Chunk * bmx_ilbm_load_iff(BBObject * cb) {
 
