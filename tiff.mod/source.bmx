@@ -24,6 +24,7 @@ SuperStrict
 Import "config/*.h"
 Import "tiff/libtiff/*.h"
 Import "../jpg.mod/libjpeg/*.h"
+Import "../../archive.mod/zlib.mod/zlib/*.h"
 
 Import "glue.c"
 
