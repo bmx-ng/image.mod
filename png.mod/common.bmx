@@ -1,4 +1,4 @@
-' Copyright (c) 2022-2023 Bruce A Henderson
+' Copyright (c) 2022-2025 Bruce A Henderson
 ' Copyright (c) 2007- Blitz Research Ltd
 '
 ' This software is provided 'as-is', without any express or implied

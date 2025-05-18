@@ -1,4 +1,4 @@
-' Copyright (c) 2022-2023 Bruce A Henderson
+' Copyright (c) 2022-2025 Bruce A Henderson
 ' Copyright (c) 2007- Blitz Research Ltd
 '
 ' This software is provided 'as-is', without any express or implied
@@ -28,12 +28,14 @@ about: The PNG loader module provides the ability to load PNG format #pixmaps.
 End Rem
 Module Image.PNG
 
-ModuleInfo "Version: 1.10"
+ModuleInfo "Version: 1.11"
 ModuleInfo "Author: Mark Sibly"
 ModuleInfo "License: zlib/libpng"
 ModuleInfo "Copyright: Blitz Research Ltd"
 ModuleInfo "Modserver: BRL"
 
+ModuleInfo "History: 1.11"
+ModuleInfo "History: Update to libpng 1.6.48."
 ModuleInfo "History: 1.10"
 ModuleInfo "History: Update to libpng 1.6.40."
 ModuleInfo "History: 1.09"
