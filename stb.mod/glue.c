@@ -38,9 +38,9 @@ stbi_uc *bmx_stbi_load_gif_from_callbacks(stbi_io_callbacks const *clbk, void *u
 stbi_uc * bmx_stbi_load_image(BBObject * cb, int * width, int * height, int * channels) {
 
 	stbi_io_callbacks callbacks;
-	callbacks.read = image_stb_TStbioCallbacks__Read;
-	callbacks.skip = image_stb_TStbioCallbacks__Skip;
-	callbacks.eof = image_stb_TStbioCallbacks__Eof;
+	callbacks.read = (int (*)(void *, char *, int))image_stb_TStbioCallbacks__Read;
+	callbacks.skip = (void (*)(void *, int))image_stb_TStbioCallbacks__Skip;
+	callbacks.eof = (int (*)(void *))image_stb_TStbioCallbacks__Eof;
 
 	return stbi_load_from_callbacks(&callbacks, cb, width, height, channels, 0);
 }
@@ -48,9 +48,9 @@ stbi_uc * bmx_stbi_load_image(BBObject * cb, int * width, int * height, int * ch
 stbi_uc * bmx_stbi_load_gif(BBObject * cb, int **delays, int *x, int *y, int *z, int *comp, int req_comp) {
 
 	stbi_io_callbacks callbacks;
-	callbacks.read = image_stb_TStbioCallbacks__Read;
-	callbacks.skip = image_stb_TStbioCallbacks__Skip;
-	callbacks.eof = image_stb_TStbioCallbacks__Eof;
+	callbacks.read = (int (*)(void *, char *, int))image_stb_TStbioCallbacks__Read;
+	callbacks.skip = (void (*)(void *, int))image_stb_TStbioCallbacks__Skip;
+	callbacks.eof = (int (*)(void *))image_stb_TStbioCallbacks__Eof;
 
 	return bmx_stbi_load_gif_from_callbacks(&callbacks, cb, delays, x, y, z, comp, req_comp);
 }
