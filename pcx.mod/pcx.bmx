@@ -19,9 +19,8 @@
 SuperStrict
 
 Rem
-bbdoc: Image/PCX loader
-about:
-The PCX loader module provides the ability to load PCX format #pixmaps.
+bbdoc: Image/PCX Loader
+about: The PCX loader module provides the ability to load PCX format #pixmaps.
 End Rem
 Module Image.PCX
 

@@ -17,7 +17,10 @@
 ' 3. This notice may not be removed or altered from any source distribution.
 ' 
 SuperStrict
-
+Rem
+bbdoc: Image/CMS Loader
+about: The CMS loader module provides the ability to load CMS format #pixmaps.
+End Rem
 Module Image.CMS
 
 

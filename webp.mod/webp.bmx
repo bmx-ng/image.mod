@@ -20,7 +20,6 @@
 '    distribution.
 '
 SuperStrict
-
 Rem
 bbdoc: Image/WebP Loader
 about: The WebP loader module provides the ability to load WebP format #pixmaps.

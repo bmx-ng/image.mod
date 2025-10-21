@@ -22,9 +22,8 @@
 SuperStrict
 
 Rem
-bbdoc: Image/TIFF loader
-about:
-The TIFF loader module provides the ability to load TIFF format #pixmaps.
+bbdoc: Image/TIFF Loader
+about: The TIFF loader module provides the ability to load TIFF format #pixmaps.
 End Rem
 Module Image.Tiff
 

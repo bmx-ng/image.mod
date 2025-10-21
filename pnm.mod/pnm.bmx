@@ -19,9 +19,8 @@
 SuperStrict
 
 Rem
-bbdoc: Image/PNM loader
-about:
-The PNM loader module provides the ability to load PNM format #pixmaps.
+bbdoc: Image/PNM Loader
+about: The PNM loader module provides the ability to load PNM format #pixmaps.
 End Rem
 Module Image.PNM
 

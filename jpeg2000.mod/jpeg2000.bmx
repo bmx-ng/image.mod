@@ -24,9 +24,8 @@
 SuperStrict
 
 Rem
-bbdoc: Graphics/JPEG 2000 loader
-about:
-The JPEG2000 loader module provides the ability to load JPEG 2000 format #pixmaps.
+bbdoc: Image/JPEG 2000 Loader
+about: The JPEG2000 loader module provides the ability to load JPEG 2000 format #pixmaps.
 End Rem
 Module Image.JPEG2000
 

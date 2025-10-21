@@ -27,7 +27,7 @@
 SuperStrict
 
 Rem
-bbdoc: Image/YUV
+bbdoc: Image/YUV-ARGB Converter
 about: Provides functions to convert between YUV and RGB.
 End Rem
 Module Image.yuv

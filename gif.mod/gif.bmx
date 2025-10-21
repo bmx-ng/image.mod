@@ -19,9 +19,8 @@
 SuperStrict
 
 Rem
-bbdoc: Image/GIF loader
-about:
-The GIF loader module provides the ability to load GIF format #pixmaps.
+bbdoc: Image/GIF Loader
+about: The GIF loader module provides the ability to load GIF format #pixmaps.
 End Rem
 Module Image.GIF
 

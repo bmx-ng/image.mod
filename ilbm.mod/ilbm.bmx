@@ -21,9 +21,8 @@
 SuperStrict
 
 Rem
-bbdoc: Image/ILBM loader
-about:
-The ILBM loader module provides the ability to load ILBM format #pixmaps.
+bbdoc: Image/ILBM Loader
+about: The ILBM loader module provides the ability to load ILBM format #pixmaps.
 End Rem
 Module Image.ILBM
 

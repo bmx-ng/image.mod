@@ -27,9 +27,8 @@
 SuperStrict
 
 Rem
-bbdoc: Image/JXL writer
-about:
-The JXL writer module provides the ability to save JXL format #pixmaps.
+bbdoc: Image/JXL Writer
+about: The JXL writer module provides the ability to save JXL format #pixmaps.
 End Rem
 Module Image.JXLWriter
 
