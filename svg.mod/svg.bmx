@@ -21,9 +21,8 @@
 SuperStrict
 
 Rem
-bbdoc: Image/SVG loader
-about:
-The SVG loader module provides the ability to load SVG format #pixmaps.
+bbdoc: Image/SVG Loader
+about: The SVG loader module provides the ability to load SVG format #pixmaps.
 End Rem
 Module Image.SVG
 

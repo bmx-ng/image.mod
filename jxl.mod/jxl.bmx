@@ -27,9 +27,8 @@
 SuperStrict
 
 Rem
-bbdoc: Image/JXL loader
-about:
-The JXL loader module provides the ability to load JXL format #pixmaps.
+bbdoc: Image/JXL Loader
+about: The JXL loader module provides the ability to load JXL format #pixmaps.
 End Rem
 Module Image.JXL
 

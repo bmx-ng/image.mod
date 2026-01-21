@@ -21,7 +21,8 @@
 SuperStrict
 
 Rem
-bbdoc: Qoi Image Loading/Saving
+bbdoc: Image/Qoi Loader and Writer
+about: The Qoi module provides the ability to load and save Qoi format #pixmaps.
 End Rem
 Module Image.Qoi
 
@@ -84,8 +85,9 @@ Type TQoiImage
 
 	Rem
 	bbdoc: Saves pixmap to a #TStream as Qoi image.
+	about: Returns #True if the #TPixmap was successfully written to the stream.
 	End Rem
-	Function Save(stream:TStream, pix:TPixmap)
+	Function Save:Int(stream:TStream, pix:TPixmap)
 		Local desc:SQoiDesc
 		desc.width = pix.width
 		desc.height = pix.height
@@ -102,6 +104,7 @@ Type TQoiImage
 				desc.channels = 4
 		End Select
 
+		Local result:Int
 		Local data:Byte Ptr
 		Try
 			Local outLen:Int
@@ -110,11 +113,33 @@ Type TQoiImage
 		Finally
 			If data Then
 				free_(data)
+				If outLen > 0 Then
+					result = True
+				End If
 			End If
 		End Try
-		
+		Return result
 	End Function
 End Type
+
+
+Rem
+bbdoc: Save a Pixmap in Qoi format
+about:
+#SavePixmapQoi saves @pixmap to @url in Qoi format. If successful, #SavePixmapPNG returns
+True, otherwise False.
+End Rem
+Function SavePixmapQoi:Int( pixmap:TPixmap, url:Object )
+	Local qoi_stream:TStream = WriteStream( url )
+	If Not qoi_stream Return False
+	
+	Local result:Int = TQoiImage.Save(qoi_stream, pixmap)
+		
+	qoi_stream.Close()
+	qoi_stream=Null
+		
+	Return result
+End Function
 
 Private
 

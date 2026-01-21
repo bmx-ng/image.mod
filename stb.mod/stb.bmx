@@ -17,7 +17,10 @@
 ' 3. This notice may not be removed or altered from any source distribution.
 ' 
 SuperStrict
-
+Rem
+bbdoc: Image/STB Loader
+about: The STB loader module provides the ability to load STB format #pixmaps.
+End Rem
 Module Image.STB
 
 ModuleInfo "Version: 1.06"

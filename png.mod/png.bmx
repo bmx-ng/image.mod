@@ -23,8 +23,8 @@
 SuperStrict
 
 Rem
-bbdoc: Image/PNG load/save
-about: The PNG loader module provides the ability to load PNG format #pixmaps.
+bbdoc: Image/PNG Loader and Writer
+about: The PNG loader module provides the ability to load and write PNG format #pixmaps.
 End Rem
 Module Image.PNG
 

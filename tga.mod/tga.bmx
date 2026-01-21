@@ -1,9 +1,8 @@
 SuperStrict
 
 Rem
-bbdoc: Image/TGA loader
-about:
-The TGA loader module provides the ability to load TGA format #pixmaps.
+bbdoc: Image/TGA Loader
+about: The TGA loader module provides the ability to load TGA format #pixmaps.
 End Rem
 Module Image.TGA
 

@@ -21,6 +21,10 @@
 '
 SuperStrict
 
+Rem
+bbdoc: Image/RAW Loader
+about: The RAW loader module provides the ability to load RAW format #pixmaps.
+End Rem
 Module Image.Raw
 
 ModuleInfo "Version: 1.00"

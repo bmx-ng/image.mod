@@ -1,9 +1,8 @@
 SuperStrict
 
 Rem
-bbdoc: Image/BMP loader
-about:
-The BMP loader module provides the ability to load BMP format #pixmaps.
+bbdoc: Image/BMP Loader
+about: The BMP loader module provides the ability to load BMP format #pixmaps.
 End Rem
 Module Image.BMP
 

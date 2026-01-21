@@ -19,9 +19,8 @@
 SuperStrict
 
 Rem
-bbdoc: Image/PIC loader
-about:
-The PIC loader module provides the ability to load PIC format #pixmaps.
+bbdoc: Image/PIC Loader
+about: The PIC loader module provides the ability to load PIC format #pixmaps.
 End Rem
 Module Image.PIC
 

@@ -23,9 +23,8 @@
 SuperStrict
 
 Rem
-bbdoc: Graphics/JPG loader
-about:
-The JPG loader module provides the ability to load JPG format #pixmaps.
+bbdoc: Image/JPG Loader
+about: The JPG loader module provides the ability to load JPG format #pixmaps.
 End Rem
 Module Image.JPG
 
