@@ -62,7 +62,7 @@ Type TQoiImage
 	Function Load:TPixmap(stream:TStream, channels:Int = 0)
 
 		Local desc:SQoiDesc
-		Local data:Byte[] = LoadByteArray(stream)
+		Local data:Byte[] = LoadByteArray(stream, False)
 		
 		Local pixels:Byte Ptr = qoi_decode(data, data.Length, desc, channels)
 		If pixels Then
@@ -106,8 +106,8 @@ Type TQoiImage
 
 		Local result:Int
 		Local data:Byte Ptr
+		Local outLen:Int
 		Try
-			Local outLen:Int
 			data = qoi_encode(pix.pixels, desc, outLen)
 			stream.WriteBytes(data, outLen)
 		Finally
