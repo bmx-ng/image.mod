@@ -46,6 +46,8 @@ ModuleInfo "History: Added SaveJPEG function, thanks to Jeffrey D. Panici for th
 ModuleInfo "History: 1.02 Release"
 ModuleInfo "History: Added support for monochrome / single channel"
 
+ModuleInfo "CC_OPTS: -DHAVE_PROTOTYPES"
+
 Import BRL.pixmap
 
 Import "common.bmx"
