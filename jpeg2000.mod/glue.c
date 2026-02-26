@@ -32,6 +32,18 @@ size_t image_jpeg2000_TJpeg2000Image__stream_size(void * p_user_data);
 BBObject * image_jpeg2000_TJpeg2000Image__NewPixmap(int width, int height);
 void * image_jpeg2000_TJpeg2000Image__PixmapPixels(BBObject * pixmap);
 
+static inline OPJ_SIZE_T bmx_stream_read(void * p_buffer, OPJ_SIZE_T p_nb_bytes, void * p_user_data) {
+    return image_jpeg2000_TJpeg2000Image__stream_read(p_buffer, p_nb_bytes, p_user_data);
+}
+
+static inline OPJ_BOOL bmx_stream_seek(OPJ_OFF_T p_nb_bytes, void * p_user_data) {
+    return image_jpeg2000_TJpeg2000Image__stream_seek((BBLONG)p_nb_bytes, p_user_data);
+}
+
+static inline OPJ_OFF_T bmx_stream_skip(OPJ_OFF_T p_nb_bytes, void * p_user_data) {
+    return (OPJ_OFF_T)image_jpeg2000_TJpeg2000Image__stream_skip((BBLONG)p_nb_bytes, p_user_data);
+}
+
 BBObject * bmx_jpeg2000_load( BBObject * maxStream ) {
 
     opj_dparameters_t parameters;
@@ -48,9 +60,9 @@ BBObject * bmx_jpeg2000_load( BBObject * maxStream ) {
 
     opj_stream_set_user_data(stream, maxStream, NULL);
     opj_stream_set_user_data_length(stream, image_jpeg2000_TJpeg2000Image__stream_size(maxStream));
-    opj_stream_set_read_function(stream, image_jpeg2000_TJpeg2000Image__stream_read);
-    opj_stream_set_seek_function(stream, image_jpeg2000_TJpeg2000Image__stream_seek);
-    opj_stream_set_skip_function(stream, image_jpeg2000_TJpeg2000Image__stream_skip);
+    opj_stream_set_read_function(stream, bmx_stream_read);
+    opj_stream_set_seek_function(stream, bmx_stream_seek);
+    opj_stream_set_skip_function(stream, bmx_stream_skip);
 
     opj_codec_t* codec = opj_create_decompress(OPJ_CODEC_JP2);
 
