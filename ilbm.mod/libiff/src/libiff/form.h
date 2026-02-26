@@ -87,7 +87,7 @@ void IFF_addToForm(IFF_Form *form, IFF_Chunk *chunk);
  * @param extensionLength Length of the extension array
  * @return The form struct derived from the file, or NULL if an error has occured
  */
-IFF_Form *IFF_readForm(FILE *file, const IFF_Long chunkSize, const IFF_Extension *extension, const unsigned int extensionLength);
+IFF_Form *IFF_readForm(io_context *context, const IFF_Long chunkSize, const IFF_Extension *extension, const unsigned int extensionLength);
 
 /**
  * Writes a form chunk and its sub chunks to a file.

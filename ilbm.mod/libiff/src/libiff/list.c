@@ -58,13 +58,13 @@ void IFF_addToList(IFF_List *list, IFF_Chunk *chunk)
     IFF_addToCAT((IFF_CAT*)list, chunk);
 }
 
-IFF_List *IFF_readList(FILE *file, const IFF_Long chunkSize, const IFF_Extension *extension, const unsigned int extensionLength)
+IFF_List *IFF_readList(io_context *context, const IFF_Long chunkSize, const IFF_Extension *extension, const unsigned int extensionLength)
 {
     IFF_ID contentsType;
     IFF_List *list;
     
     /* Read the contentsType id */
-    if(!IFF_readId(file, contentsType, CHUNKID, "contentsType"))
+    if(!IFF_readId(context, contentsType, CHUNKID, "contentsType"))
 	return NULL;
 
     /* Create new list */
@@ -75,7 +75,7 @@ IFF_List *IFF_readList(FILE *file, const IFF_Long chunkSize, const IFF_Extension
     while(list->chunkSize < chunkSize)
     {
 	/* Read sub chunk */
-	IFF_Chunk *chunk = IFF_readChunk(file, NULL, extension, extensionLength);
+	IFF_Chunk *chunk = IFF_readChunk(context, NULL, extension, extensionLength);
 	
 	if(chunk == NULL)
 	{
