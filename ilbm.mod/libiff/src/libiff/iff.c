@@ -27,12 +27,12 @@
 #include "error.h"
 
 
-static int IFF_FILE_read(void *file, char *data, int size)
+static int IFF_FILE_read(void *file, void *data, int size)
 {
     return (int) fread(data,1,size,(FILE*) file);
 }
 
-static int IFF_FILE_write(void *file, char *data, int size)
+static int IFF_FILE_write(void *file, void *data, int size)
 {
     return (int) fwrite(data, 1, size, (FILE*) file);
 }
