@@ -92,7 +92,16 @@ IFF_Chunk *ILBM_readColorNames(io_context *context, const IFF_Long chunkSize)
             
             do
             {
-                c = fgetc(context); /* Read character */
+                /* Read character */
+                unsigned char uc;
+                if ((context->io.read)(context->userData,&uc,sizeof(unsigned char)) > 0)
+                {
+                    c = uc;
+                }
+                else
+                {
+                    c = EOF;
+                }
                 
                 if(c == EOF) /* We should never reach the end of the file prematurely */
                 {

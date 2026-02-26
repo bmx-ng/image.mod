@@ -27,8 +27,8 @@
 
 #include "brl.mod/blitz.mod/blitz.h"
 
-extern int image_ilbm_TIlbmIoCallbacks__Read(void * cb, char * data,int size);
-extern int image_ilbm_TIlbmIoCallbacks__Write(void * cb, char * data,int size);
+extern int image_ilbm_TIlbmIoCallbacks__Read(void * cb, void * data,int size);
+extern int image_ilbm_TIlbmIoCallbacks__Write(void * cb, void * data,int size);
 extern int image_ilbm_TIlbmIoCallbacks__Eof(void * cb);
 
 IFF_Chunk * bmx_ilbm_load_iff(BBObject * cb) {

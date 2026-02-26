@@ -47,8 +47,8 @@ typedef char IFF_ID[IFF_ID_SIZE];
 
 typedef struct
 {
-   int (*read) (void *userData, char *data, int size);
-   int (*write) (void *userData, char *data, int size);
+   int (*read) (void *userData, void *data, int size);
+   int (*write) (void *userData, void *data, int size);
    int (*eof) (void *userData);
 } io_callbacks;
 
