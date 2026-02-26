@@ -41,6 +41,7 @@ ModuleInfo "CC_OPTS: -DSIZEOF_SIZE_T=8"
 ?ptr32
 ModuleInfo "CC_OPTS: -DSIZEOF_SIZE_T=4"
 ?
+ModuleInfo "CC_OPTS: -DHAVE_PROTOTYPES"
 
 Import "common.bmx"
 
