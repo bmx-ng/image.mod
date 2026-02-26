@@ -40,9 +40,9 @@ void IFF_addToForm(IFF_Form *form, IFF_Chunk *chunk)
     IFF_addToGroup((IFF_Group*)form, chunk);
 }
 
-IFF_Form *IFF_readForm(FILE *file, const IFF_Long chunkSize, const IFF_Extension *extension, const unsigned int extensionLength)
+IFF_Form *IFF_readForm(io_context *context, const IFF_Long chunkSize, const IFF_Extension *extension, const unsigned int extensionLength)
 {
-    return (IFF_Form*)IFF_readGroup(file, FORM_CHUNKID, chunkSize, FORM_GROUPTYPENAME, TRUE, extension, extensionLength);
+    return (IFF_Form*)IFF_readGroup(context, FORM_CHUNKID, chunkSize, FORM_GROUPTYPENAME, TRUE, extension, extensionLength);
 }
 
 int IFF_writeForm(FILE *file, const IFF_Form *form, const IFF_Extension *extension, const unsigned int extensionLength)
