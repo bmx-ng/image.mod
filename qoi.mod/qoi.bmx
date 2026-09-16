@@ -73,7 +73,7 @@ Type TQoiImage
 				format = PF_RGBA8888
 				align = 4
 			End If
-			Local pix:TPixmap = TPixmap.Create(desc.width, desc.height, format, align)
+			Local pix:TPixmap = TPixmap.Create(Int(desc.width), Int(desc.height), format, align)
 			
 			MemCopy(pix.pixels, pixels, Size_T(desc.width * desc.height * desc.channels))
 

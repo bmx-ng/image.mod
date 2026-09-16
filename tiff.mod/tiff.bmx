@@ -73,7 +73,7 @@ Type TTiffImage
 
 			bmx_tiff_dimensions(tiff, width, height)
 
-			Local pix:TPixmap = TPixmap.Create(width, height, PF_RGBA8888, 4)
+			Local pix:TPixmap = TPixmap.Create(Int(width), Int(height), PF_RGBA8888, 4)
 
 			Local res:Int = bmx_tiff_readRGBAImage(tiff, width, height, pix.pixels, 0)
 

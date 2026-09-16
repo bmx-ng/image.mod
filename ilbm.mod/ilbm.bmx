@@ -75,7 +75,7 @@ Type TPixmapLoaderILBM Extends TPixmapLoader
 			Return Null
 		End If
 
-		Local pix:TPixmap = CreatePixmap( rgbImage.width, rgbImage.height, PF_RGBA8888, 4 )
+		Local pix:TPixmap = CreatePixmap( Int(rgbImage.width), Int(rgbImage.height), PF_RGBA8888, 4 )
 		MemCopy(pix.pixels, rgbImage.pixels, size_T(pix.width * pix.height * 4))
 
 		free_(rgbImage)
