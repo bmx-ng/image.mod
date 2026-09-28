@@ -4,6 +4,13 @@ BlitzMax includes support for loading many different image formats.
 
 Simply import one of the image modules, and you will be able to load images of that format into a `TPixmap`.
 
+## DDS texture containers
+
+Import `Image.DDS` to load BC1/BC3 DDS containers into `TTextureData`, retaining
+compressed blocks and mip levels. This also enables DDS in the new Max2D image
+loaders. DDS data is not decoded into `TPixmap`. See [Image.DDS](dds.mod/README.md)
+for supported headers, stream loading and backend limitations.
+
 ## Supported formats
 
 The following image formats are currently supported : 
