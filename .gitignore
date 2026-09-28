@@ -4,3 +4,9 @@
 *.a
 *.i
 *.i2
+
+# Generated build metadata
+*.bmxbuild
+*.bmxbuild.stamp
+*.bmxbuild.stamp.bmk-tmp-*
+*.module-config
