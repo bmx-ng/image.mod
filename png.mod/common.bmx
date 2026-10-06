@@ -40,7 +40,7 @@ Import "libpng/pngwio.c"
 Import "libpng/pngwrite.c"
 Import "libpng/pngwtran.c"
 Import "libpng/pngwutil.c"
-?armv7 or arm64 or arm
+?armv7 or arm64 or arm or armeabiv7a or arm64v8a
 Import "libpng/arm/arm_init.c"
 Import "libpng/arm/filter_neon_intrinsics.c"
 Import "libpng/arm/palette_neon_intrinsics.c"
