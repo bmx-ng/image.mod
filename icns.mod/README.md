@@ -88,3 +88,14 @@ The compatibility fixtures used by the tests originate from the MIT-licensed
 [`icnsutil`](https://github.com/relikd/icnsutil) project and are used only as
 format fixtures; the runtime implementation is entirely BlitzMax. See
 `LICENSE.icnsutil` for the upstream copyright and license.
+
+The focused reference matrix under `tests/fixtures/reference` contains 38
+upstream-verified ICNS files. It exercises every modern key available in the
+reference archive with PNG and JPEG 2000 payloads, every officially permitted
+ARGB combination, and the legacy 48x48 RGB/mask pair. Tests decode every PNG
+and ARGB image, preserve every JPEG 2000 payload byte-for-byte across an ICNS
+round trip, and validate the legacy mask during pixel reconstruction. The
+smaller original fixtures additionally cover classic mono elements, 16/32/128
+legacy RGB and masks, nested selected icons, binary plist metadata, malformed
+containers, TOC rebuilding, caller-owned stream behavior, and native pixmap
+creation.

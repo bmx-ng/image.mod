@@ -183,6 +183,123 @@ Type TIcnsFileTest Extends TTest
 		AssertEquals(64, registered.width)
 	End Method
 
+	Method TestReferencePngAndArgbMatrix() { test }
+		Local names:String[] = [..
+			"1024-ic10-png.icns", "128-ic07-png.icns", "16-ic04-png.icns", "16-icp4-png.icns", ..
+			"18-icsb-png.icns", "24-sb24-png.icns", "256-ic08-png.icns", "256-ic13-png.icns", ..
+			"32-ic05-png.icns", "32-ic11-png.icns", "32-icp5-png.icns", "36-icsB-png.icns", ..
+			"48-SB24-png.icns", "48-icp6-png.icns", "512-ic09-png.icns", "512-ic14-png.icns", ..
+			"64-ic12-png.icns", "16-ic04-argb.icns", "18-icsb-argb.icns", "32-ic05-argb.icns"]
+		Local keys:String[] = [..
+			"ic10", "ic07", "ic04", "icp4", "icsb", "sb24", "ic08", "ic13", "ic05", "ic11", ..
+			"icp5", "icsB", "SB24", "icp6", "ic09", "ic14", "ic12", "ic04", "icsb", "ic05"]
+		Local sizes:Int[] = [1024, 128, 16, 16, 18, 24, 256, 256, 32, 32, 32, 36, 48, 48, 512, 512, 64, 16, 18, 32]
+
+		For Local i:Int = 0 Until names.Length
+			CheckSingleReference(names[i], keys[i], sizes[i], True)
+		Next
+	End Method
+
+	Method TestReferenceJpeg2000PreservationMatrix() { test }
+		Local names:String[] = [..
+			"1024-ic10-jp2.icns", "128-ic07-jp2.icns", "16-ic04-jp2.icns", "16-icp4-jp2.icns", ..
+			"18-icsb-jp2.icns", "24-sb24-jp2.icns", "256-ic08-jp2.icns", "256-ic13-jp2.icns", ..
+			"32-ic05-jp2.icns", "32-ic11-jp2.icns", "32-icp5-jp2.icns", "36-icsB-jp2.icns", ..
+			"48-SB24-jp2.icns", "48-icp6-jp2.icns", "512-ic09-jp2.icns", "512-ic14-jp2.icns", ..
+			"64-ic12-jp2.icns"]
+		Local keys:String[] = [..
+			"ic10", "ic07", "ic04", "icp4", "icsb", "sb24", "ic08", "ic13", "ic05", "ic11", ..
+			"icp5", "icsB", "SB24", "icp6", "ic09", "ic14", "ic12"]
+		Local sizes:Int[] = [1024, 128, 16, 16, 18, 24, 256, 256, 32, 32, 32, 36, 48, 48, 512, 512, 64]
+
+		For Local i:Int = 0 Until names.Length
+			CheckSingleReference(names[i], keys[i], sizes[i], False)
+		Next
+	End Method
+
+	Method TestReferenceLegacy48RgbAndMask() { test }
+		Local path:TPath = fixtures.Join("reference").Join("48-ih32-rgb.icns")
+		Local image:TIcnsFile = TIcnsFile.Load(path)
+		AssertEquals(2, image.MediaKeys().Length)
+		AssertTrue(image.HasMedia("ih32"))
+		AssertTrue(image.HasMedia("h8mk"))
+		Local pixmap:TPixmap = image.ToPixmap("ih32")
+		AssertNotNull(pixmap)
+		AssertEquals(48, pixmap.width)
+		AssertEquals(48, pixmap.height)
+		For Local y:Int = 0 Until pixmap.height
+			For Local x:Int = 0 Until pixmap.width
+				AssertEquals(255, (pixmap.ReadPixel(x, y) Shr 24) & $ff)
+			Next
+		Next
+		Local roundTrip:TIcnsFile = TIcnsFile.Load(image.ToByteArray(), "round-trip.icns")
+		AssertBytesEqual(image.GetMedia("ih32"), roundTrip.GetMedia("ih32"))
+		AssertBytesEqual(image.GetMedia("h8mk"), roundTrip.GetMedia("h8mk"))
+	End Method
+
+	Method TestOpaqueClassicAndUnknownElementPreservation() { test }
+		Local keys:String[] = ["ICON", "icm#", "icm4", "icm8", "ics4", "ics8", "icl4", "icl8", "ich#", "ich4", "ich8", "icnV", "name", "zzzz"]
+		Local lengths:Int[] = [128, 48, 96, 192, 128, 256, 512, 1024, 576, 1152, 2304, 4, 7, 13]
+		Local image:TIcnsFile = New TIcnsFile
+		For Local i:Int = 0 Until keys.Length
+			image.AddMedia(MakeBytes(lengths[i], i + 1), keys[i])
+		Next
+
+		Local roundTrip:TIcnsFile = TIcnsFile.Load(image.ToByteArray(True), "opaque.icns")
+		AssertTrue(roundTrip.HasMedia("TOC "))
+		For Local i:Int = 0 Until keys.Length
+			AssertBytesEqual(image.GetMedia(keys[i]), roundTrip.GetMedia(keys[i]), keys[i])
+		Next
+	End Method
+
+	Method TestNestedTemplateAndDarkElementPreservation() { test }
+		Local nested:Byte[] = LoadByteArray(fixtures.Join("selected.icns").ToString())
+		Local darkKey:String = Chr($fd) + Chr($d9) + Chr($2f) + Chr($a8)
+		Local image:TIcnsFile = New TIcnsFile
+		image.AddMedia(nested, "sbtp")
+		image.AddMedia(nested, darkKey)
+		Local roundTrip:TIcnsFile = TIcnsFile.Load(image.ToByteArray(), "nested-types.icns")
+		AssertEquals(nested.Length - 8, roundTrip.GetMedia("sbtp").Length)
+		AssertEquals(nested.Length - 8, roundTrip.GetMedia(darkKey).Length)
+	End Method
+
+	Method CheckSingleReference(name:String, key:String, size:Int, decodable:Int)
+		Local path:TPath = fixtures.Join("reference").Join(name)
+		Local image:TIcnsFile = TIcnsFile.Load(path)
+		AssertEquals(1, image.MediaKeys().Length, name)
+		AssertTrue(image.HasMedia(key), name)
+		Local payload:Byte[] = image.GetMedia(key)
+		AssertTrue(payload.Length > 8, name)
+
+		If decodable Then
+			Local pixmap:TPixmap = image.ToPixmap(key)
+			AssertNotNull(pixmap, name)
+			AssertEquals(size, pixmap.width, name)
+			AssertEquals(size, pixmap.height, name)
+		Else
+			AssertNull(image.ToPixmap(), name)
+		End If
+
+		Local roundTrip:TIcnsFile = TIcnsFile.Load(image.ToByteArray(), "round-trip.icns")
+		AssertBytesEqual(payload, roundTrip.GetMedia(key), name)
+	End Method
+
+	Method AssertBytesEqual(expected:Byte[], actual:Byte[], message:String = Null)
+		AssertNotNull(actual, message)
+		AssertEquals(expected.Length, actual.Length, message)
+		For Local i:Int = 0 Until expected.Length
+			If expected[i] <> actual[i] Then RuntimeError(message + " byte mismatch at " + i)
+		Next
+	End Method
+
+	Method MakeBytes:Byte[](length:Int, seed:Int)
+		Local data:Byte[] = New Byte[length]
+		For Local i:Int = 0 Until length
+			data[i] = Byte((i * 31 + seed) & $ff)
+		Next
+		Return data
+	End Method
+
 	Method AssertParseFailure(data:Byte[])
 		Try
 			TIcnsFile.Load(data, "invalid.icns")
