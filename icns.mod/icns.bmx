@@ -35,7 +35,7 @@ ModuleInfo "Copyright: icnsutil - 2021-2023 relikd"
 ModuleInfo "History: 1.00 Initial release"
 
 Import BRL.ByteBuffer
-Import BRL.BankStream
+Import BRL.ByteBufferStream
 Import BRL.Pixmap
 Import Collections.HashMap
 Import BRL.Path
@@ -952,9 +952,7 @@ Private
 	End Method
 
 	Method _LoadPng:TPixmap(payload:TByteBuffer)
-		Local bytes:Byte[] = _BufferBytes(payload)
-		Local bank:TBank = CreateStaticBank(bytes, bytes.Length)
-		Return LoadPixmapPNG(bank)
+		Return LoadPixmapPNG(payload)
 	End Method
 
 	Method _Unpack:Byte[](source:Byte[], offset:Int, expected:Int)
