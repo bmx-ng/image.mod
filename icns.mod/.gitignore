@@ -1,0 +1,6 @@
+.generics/
+py/
+tests/test
+tests/test.debug
+examples/example_01
+examples/atom.icns
