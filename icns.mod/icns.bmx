@@ -212,22 +212,32 @@ Public
 	about: If @key is omitted, the element type is selected from the pixmap dimensions. Set @retina for an @2x representation, or provide a key to resolve ambiguous dimensions.
 	End Rem
 	Method AddPixmap(pixmap:TPixmap, key:String = Null, retina:Int = False, force:Int = False, compression:Int = 6)
-		If Not pixmap Then Throw New TIcnsAttributeException("Pixmap must not be Null.")
+		If Not pixmap Then
+			Throw New TIcnsAttributeException("Pixmap must not be Null.")
+		End If
+
 		If pixmap.width <> pixmap.height Then
 			Throw New TIcnsAttributeException("ICNS pixmaps must be square.")
 		End If
-		If Not key Then key = KeyForSize(pixmap.width, retina)
+
+		If Not key Then
+			key = KeyForSize(pixmap.width, retina)
+		End If
+
 		If key.Length <> 4 Or Not mediaTypes.ContainsKey(key) Or Not mediaTypes[key].IsType(EDataType.png) Then
 			Throw New TIcnsAttributeException("ICNS element '" + key + "' does not accept PNG pixmap data.")
 		End If
+
 		Local info:TIcnsMedia = mediaTypes[key]
 		If info.size.width > 0 And (info.size.width <> pixmap.width Or info.size.height <> pixmap.height) Then
 			Throw New TIcnsAttributeException("Pixmap dimensions do not match ICNS element '" + key + "'.")
 		End If
+
 		Local bank:TBank = CreateBank()
 		If Not SavePixmapPNG(pixmap, bank, compression) Then
 			Throw New TIcnsAttributeException("Could not encode pixmap as PNG.")
 		End If
+
 		Local bytes:Byte[] = New Byte[Int(bank.Size())]
 		If bytes.Length Then MemCopy(bytes, bank.Buf(), Size_T(bytes.Length))
 		AddMedia(bytes, key, key + ".png", force)
@@ -239,29 +249,47 @@ Public
 	Function KeyForSize:String(size:Int, retina:Int = False)
 		If retina Then
 			Select size
-				Case 32; Return "ic11"
-				Case 36; Return "icsB"
-				Case 48; Return "SB24"
-				Case 64; Return "ic12"
-				Case 256; Return "ic13"
-				Case 512; Return "ic14"
-				Case 1024; Return "ic10"
+				Case 32
+					Return "ic11"
+				Case 36
+					Return "icsB"
+				Case 48
+					Return "SB24"
+				Case 64
+					Return "ic12"
+				Case 256
+					Return "ic13"
+				Case 512
+					Return "ic14"
+				Case 1024
+					Return "ic10"
 			End Select
 		Else
 			Select size
-				Case 16; Return "icp4"
-				Case 18; Return "icsb"
-				Case 24; Return "sb24"
-				Case 32; Return "icp5"
-				Case 48; Return "icp6"
-				Case 128; Return "ic07"
-				Case 256; Return "ic08"
-				Case 512; Return "ic09"
-				Case 1024; Return "ic10"
+				Case 16
+					Return "icp4"
+				Case 18
+					Return "icsb"
+				Case 24
+					Return "sb24"
+				Case 32
+					Return "icp5"
+				Case 48
+					Return "icp6"
+				Case 128
+					Return "ic07"
+				Case 256
+					Return "ic08"
+				Case 512
+					Return "ic09"
+				Case 1024
+					Return "ic10"
 			End Select
 		End If
 		Local suffix:String
-		If retina Then suffix = " @2x"
+		If retina Then
+			suffix = " @2x"
+		End If
 		Throw New TIcnsAttributeException("No standard ICNS element type for " + size + "x" + size + suffix + ".")
 	End Function
 
@@ -283,7 +311,9 @@ Public
 	bbdoc: Returns a copy of an element payload, or Null if absent.
 	End Rem
 	Method GetMedia:Byte[](key:String)
-		If Not media.ContainsKey(key) Then Return Null
+		If Not media.ContainsKey(key) Then
+			Return Null
+		End If
 		Return _BufferBytes(media[key])
 	End Method
 
@@ -291,7 +321,9 @@ Public
 	bbdoc: Removes an element and returns True when it existed.
 	End Rem
 	Method RemoveMedia:Int(key:String)
-		If Not media.ContainsKey(key) Then Return False
+		If Not media.ContainsKey(key) Then
+			Return False
+		End If
 		media.Remove(key)
 		For Local i:Int = 0 Until mediaOrder.Length
 			If mediaOrder[i] = key Then
@@ -309,29 +341,44 @@ Public
 	Method ToByteArray:Byte[](includeToc:Int = False)
 		Local keys:String[]
 		For Local key:String = EachIn mediaOrder
-			If key <> "TOC " Then keys :+ [key]
+			If key <> "TOC " Then
+				keys :+ [key]
+			End If
 		Next
+
 		Local tocPayload:Int
-		If includeToc Then tocPayload = keys.Length * 8
+		If includeToc Then
+			tocPayload = keys.Length * 8
+		End If
+
 		Local total:Long = 8
-		If includeToc Then total :+ 8 + tocPayload
+		If includeToc Then
+			total :+ 8 + tocPayload
+		End If
+
 		For Local key:String = EachIn keys
 			total :+ 8 + media[key].Limit()
 		Next
-		If total > $7fffffff Then Throw New TIcnsAttributeException("ICNS output exceeds the supported 2 GiB size.")
+		If total > $7fffffff Then
+			Throw New TIcnsAttributeException("ICNS output exceeds the supported 2 GiB size.")
+		End If
 
 		Local result:Byte[] = New Byte[Int(total)]
 		Local pos:Int
-		_WriteHeader(result, pos, "icns", Int(total)); pos :+ 8
+		_WriteHeader(result, pos, "icns", Int(total))
+		pos :+ 8
 		If includeToc Then
-			_WriteHeader(result, pos, "TOC ", tocPayload + 8); pos :+ 8
+			_WriteHeader(result, pos, "TOC ", tocPayload + 8)
+			pos :+ 8
 			For Local key:String = EachIn keys
-				_WriteHeader(result, pos, key, media[key].Limit() + 8); pos :+ 8
+				_WriteHeader(result, pos, key, media[key].Limit() + 8)
+				pos :+ 8
 			Next
 		End If
 		For Local key:String = EachIn keys
 			Local payload:Byte[] = _BufferBytes(media[key])
-			_WriteHeader(result, pos, key, payload.Length + 8); pos :+ 8
+			_WriteHeader(result, pos, key, payload.Length + 8)
+			pos :+ 8
 			If payload.Length Then MemCopy(Byte Ptr(result) + pos, payload, Size_T(payload.Length))
 			pos :+ payload.Length
 		Next
@@ -440,14 +487,17 @@ Private
 			If declaredLength - pos < 8 Then
 				Throw New TIcnsParseException("Truncated ICNS element header at offset " + pos + ".")
 			End If
+
 			Local elementLength:Int
 			Local key:String = ReadIcnsHeader(data.Slice(pos, 8), elementLength)
 			If elementLength < 8 Or Long(pos) + Long(elementLength) > Long(data.Limit()) Then
 				Throw New TIcnsParseException("Invalid ICNS element length for '" + key + "' at offset " + pos + ".")
 			End If
+
 			If media.ContainsKey(key) Then
 				Throw New TIcnsParseException("Duplicate ICNS element key '" + key + "'.")
 			End If
+
 			media.Add(key, data.Slice(pos + 8, elementLength - 8).AsReadOnly())
 			mediaOrder :+ [key]
 			pos :+ elementLength
@@ -455,7 +505,10 @@ Private
 	End Method
 
 	Method DetermineDataType:EDataType(buffer:TByteBuffer)
-		If Not buffer Or buffer.Remaining() < 4 Then Return EDataType.none
+		If Not buffer Or buffer.Remaining() < 4 Then
+			Return EDataType.none
+		End If
+
 		Local count:Int = Min(8, buffer.Remaining())
 		Local header:Byte Ptr = StackAlloc(8)
 		MemClear(header, 8)
@@ -482,7 +535,10 @@ Private
 		If CompareBytes(HEADER_ICNS, header) Then
 			Return EDataType.icns
 		End If
-		If buffer.Remaining() >= 8 And IsIcnsWithoutHeader(buffer.Slice()) Then Return EDataType.icns
+
+		If buffer.Remaining() >= 8 And IsIcnsWithoutHeader(buffer.Slice()) Then
+			Return EDataType.icns
+		End If
 
 		Return EDataType.none
 	End Method
@@ -520,11 +576,15 @@ Private
 	End Method
 
 	Method IsIcnsWithoutHeader:Int(data:TByteBuffer)
-		If Not data Or data.Remaining() < 8 Then Return False
+		If Not data Or data.Remaining() < 8 Then
+			Return False
+		End If
 		Local offset:Int
 
 		For Local i:Int = 0 Until 2
-			If data.Limit() - offset < 8 Then Return False
+			If data.Limit() - offset < 8 Then
+				Return False
+			End If
 			Local length:Int
 			Local key:String = ReadIcnsHeader(data.Slice(offset, 8), length)
 
@@ -715,20 +775,26 @@ Private
 		End If
 
 		If ext = "png" Then
-			If data.Limit() < 24 Then Throw New TCannotDetermineTypeException("Truncated PNG header.")
+			If data.Limit() < 24 Then
+				Throw New TCannotDetermineTypeException("Truncated PNG header.")
+			End If
 			' width and height are big-endian 4 byte integers at offset 16 and 20
 			Local header:TByteBuffer = data.Slice(16, 8)
 			Local width:Int = header.GetInt()
 			Local height:Int = header.GetInt()
 			Return New SSize(width, height)
 		ElseIf ext = "argb" Then
-			If data.Limit() <= 4 Then Throw New TCannotDetermineTypeException("Truncated ARGB data.")
+			If data.Limit() <= 4 Then
+				Throw New TCannotDetermineTypeException("Truncated ARGB data.")
+			End If
 			' without ARGB header
 			Local total:Int = GetSize(TByteBuffer(data.Slice(4, data.Limit() - 4)))
 
 			Return MatchMaxSize(total, EDataType.argb).size
 		ElseIf ext = "rgb" Then
-			If data.Limit() < 4 Then Throw New TCannotDetermineTypeException("Truncated RGB data.")
+			If data.Limit() < 4 Then
+				Throw New TCannotDetermineTypeException("Truncated RGB data.")
+			End If
 			Local rgb:TByteBuffer = data.Slice()
 			' without it32 header
 			If rgb.GetInt() = 0 Then
@@ -737,7 +803,9 @@ Private
 			Local total:Int = rgb.Limit() - rgb.Position()
 			Return MatchMaxSize(total, EDataType.rgb).size
 		ElseIf ext = "jp2" Then
-			If data.Limit() < 16 Then Throw New TCannotDetermineTypeException("Truncated JPEG 2000 header.")
+			If data.Limit() < 16 Then
+				Throw New TCannotDetermineTypeException("Truncated JPEG 2000 header.")
+			End If
 			Local jp2:TByteBuffer = data.Slice()
 			If jp2.GetInt() = $FF4FFF51 Then
 				' width and height are big-endian 4 byte integers at offset 8 and 12
@@ -787,12 +855,16 @@ Private
 		Local copy:TByteBuffer = buffer.Duplicate()
 		copy.Position(0)
 		Local result:Byte[] = New Byte[copy.Remaining()]
-		If result.Length Then copy.GetBytes(result, UInt(result.Length))
+		If result.Length Then
+			copy.GetBytes(result, UInt(result.Length))
+		End If
 		Return result
 	End Method
 
 	Method _WriteHeader(output:Byte[], offset:Int, key:String, length:Int)
-		If key.Length <> 4 Then Throw New TIcnsAttributeException("An ICNS element key must contain exactly four bytes.")
+		If key.Length <> 4 Then
+			Throw New TIcnsAttributeException("An ICNS element key must contain exactly four bytes.")
+		End If
 		For Local i:Int = 0 Until 4
 			output[offset + i] = Byte(key[i] & $ff)
 		Next
@@ -804,40 +876,64 @@ Private
 
 	Method _DecodePixmap:TPixmap(key:String, throwUnsupported:Int = True)
 		If Not media.ContainsKey(key) Then
-			If throwUnsupported Then Throw New TIcnsKeyException("No ICNS element named '" + key + "'.")
+			If throwUnsupported Then
+				Throw New TIcnsKeyException("No ICNS element named '" + key + "'.")
+			End If
 			Return Null
 		End If
+
 		Local payload:TByteBuffer = media[key]
 		Local dataType:EDataType = DetermineDataType(payload.Slice())
-		If dataType = EDataType.png Then Return _LoadPng(payload)
+		If dataType = EDataType.png Then
+			Return _LoadPng(payload)
+		End If
+
 		If Not mediaTypes.ContainsKey(key) Then
-			If throwUnsupported Then Throw New TIcnsAttributeException("Unknown ICNS element type '" + key + "'.")
+			If throwUnsupported Then
+				Throw New TIcnsAttributeException("Unknown ICNS element type '" + key + "'.")
+			End If
 			Return Null
 		End If
+
 		Local info:TIcnsMedia = mediaTypes[key]
-		If dataType = EDataType.argb Then Return _DecodePlanar(payload, info, 4, 4, Null)
+		If dataType = EDataType.argb Then
+			Return _DecodePlanar(payload, info, 4, 4, Null)
+		End If
+
 		If info.IsType(EDataType.rgb) Then
 			Local offset:Int
 			If key = "it32" Then
-				If payload.Limit() < 4 Then Return Null
+				If payload.Limit() < 4 Then
+					Return Null
+				End If
 				offset = 4
 			End If
 			Local mask:TByteBuffer
 			Local maskKey:String = _MaskKey(key)
-			If maskKey And media.ContainsKey(maskKey) Then mask = media[maskKey]
+			If maskKey And media.ContainsKey(maskKey) Then
+				mask = media[maskKey]
+			End If
 			Return _DecodePlanar(payload, info, 3, offset, mask)
 		End If
-		If throwUnsupported Then Throw New TIcnsAttributeException("ICNS element '" + key + "' cannot be decoded to a pixmap.")
+		If throwUnsupported Then
+			Throw New TIcnsAttributeException("ICNS element '" + key + "' cannot be decoded to a pixmap.")
+		End If
 		Return Null
 	End Method
 
 	Method _DecodePlanar:TPixmap(payload:TByteBuffer, info:TIcnsMedia, channels:Int, offset:Int, mask:TByteBuffer)
 		Local pixels:Int = info.size.width * info.size.height
 		Local unpacked:Byte[] = _Unpack(_BufferBytes(payload), offset, pixels * channels)
-		If Not unpacked Then Return Null
+		If Not unpacked Then
+			Return Null
+		End If
+
 		Local pixmap:TPixmap = CreatePixmap(info.size.width, info.size.height, PF_RGBA8888, 4)
 		Local maskBytes:Byte[]
-		If mask And mask.Limit() = pixels Then maskBytes = _BufferBytes(mask)
+		If mask And mask.Limit() = pixels Then
+			maskBytes = _BufferBytes(mask)
+		End If
+
 		For Local i:Int = 0 Until pixels
 			Local a:Int = 255
 			Local plane:Int
@@ -862,7 +958,9 @@ Private
 	End Method
 
 	Method _Unpack:Byte[](source:Byte[], offset:Int, expected:Int)
-		If offset < 0 Or offset > source.Length Then Return Null
+		If offset < 0 Or offset > source.Length Then
+			Return Null
+		End If
 		Local result:Byte[] = New Byte[expected]
 		Local src:Int = offset
 		Local dst:Int
@@ -871,13 +969,17 @@ Private
 			src :+ 1
 			If control < $80 Then
 				Local count:Int = control + 1
-				If src + count > source.Length Or dst + count > expected Then Return Null
+				If src + count > source.Length Or dst + count > expected Then
+					Return Null
+				End If
 				MemCopy(Byte Ptr(result) + dst, Byte Ptr(source) + src, Size_T(count))
 				src :+ count
 				dst :+ count
 			Else
 				Local count:Int = control - $7d
-				If src >= source.Length Or dst + count > expected Then Return Null
+				If src >= source.Length Or dst + count > expected Then
+					Return Null
+				End If
 				Local value:Byte = source[src]
 				src :+ 1
 				For Local i:Int = 0 Until count
@@ -886,16 +988,22 @@ Private
 				Next
 			End If
 		Wend
-		If dst <> expected Or src <> source.Length Then Return Null
+		If dst <> expected Or src <> source.Length Then
+			Return Null
+		End If
 		Return result
 	End Method
 
 	Method _MaskKey:String(key:String)
 		Select key
-			Case "is32"; Return "s8mk"
-			Case "il32"; Return "l8mk"
-			Case "ih32"; Return "h8mk"
-			Case "it32"; Return "t8mk"
+			Case "is32"
+				Return "s8mk"
+			Case "il32"
+				Return "l8mk"
+			Case "ih32"
+				Return "h8mk"
+			Case "it32"
+				Return "t8mk"
 		End Select
 		Return Null
 	End Method
@@ -910,11 +1018,15 @@ Private
 			Local n:Int = data.Get() & $FF
 
 			If n < $80 Then
-				If i + n + 1 >= _end Then Throw New TCannotDetermineTypeException("Truncated ICNS PackBits literal run.")
+				If i + n + 1 >= _end Then
+					Throw New TCannotDetermineTypeException("Truncated ICNS PackBits literal run.")
+				End If
 				count :+ n + 1
 				i :+ n + 2
 			Else
-				If i + 1 >= _end Then Throw New TCannotDetermineTypeException("Truncated ICNS PackBits repeat run.")
+				If i + 1 >= _end Then
+					Throw New TCannotDetermineTypeException("Truncated ICNS PackBits repeat run.")
+				End If
 				count :+ n - 125
 				i :+ 2
 			End If
@@ -930,7 +1042,9 @@ bbdoc: Loads the largest supported icon in an ICNS container as a pixmap.
 End Rem
 Function LoadPixmapICNS:TPixmap(url:Object)
 	Local stream:TStream = ReadStream(url)
-	If Not stream Then Return Null
+	If Not stream Then
+		Return Null
+	End If
 	Try
 		Local file:TIcnsFile = TIcnsFile.Load(stream, String(url))
 		Local pixmap:TPixmap = file.ToPixmap()
