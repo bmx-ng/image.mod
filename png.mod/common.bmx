@@ -101,8 +101,8 @@ Function png_create_info_struct:Byte Ptr( png_ptr:Byte Ptr ) = "bmx_png_create_i
 Function png_init_io( png_ptr:Byte Ptr,c_stream:Byte Ptr ) = "bmx_png_init_io"
 Function png_set_sig_bytes( png_ptr:Byte Ptr,number:Int ) = "bmx_png_set_sig_bytes"
 
-Function png_set_read_fn( png_ptr:Byte Ptr,user:Object,read_fn:Int(png_ptr:Byte Ptr,buf:Byte Ptr,size:Int) ) = "bmx_png_set_read_fn"
-Function png_set_write_fn( png_ptr:Byte Ptr,user:Object,write_fn:Int(png_ptr:Byte Ptr,buf:Byte Ptr,size:Int),flush_fn(png_ptr:Byte Ptr) ) = "bmx_png_set_write_fn"
+Function png_set_read_fn( png_ptr:Byte Ptr,user:Object,read_fn(png_ptr:Byte Ptr,buf:Byte Ptr,size:Int) ) = "bmx_png_set_read_fn"
+Function png_set_write_fn( png_ptr:Byte Ptr,user:Object,write_fn(png_ptr:Byte Ptr,buf:Byte Ptr,size:Int),flush_fn(png_ptr:Byte Ptr) ) = "bmx_png_set_write_fn"
 
 Function png_set_expand( png_ptr:Byte Ptr ) = "bmx_png_set_expand"
 Function png_set_strip_16( png_ptr:Byte Ptr ) = "bmx_png_set_strip_16"

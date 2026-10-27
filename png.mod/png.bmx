@@ -68,14 +68,14 @@ Import "common.bmx"
 
 Private
 
-Function png_read_fn:Int( png_ptr:Byte Ptr,buf:Byte Ptr,size:Int )
+Function png_read_fn( png_ptr:Byte Ptr,buf:Byte Ptr,size:Int )
 	Local stream:TStream = TStream(png_get_io_ptr(png_ptr))
-	Return stream.ReadBytes( buf,size )
+	stream.ReadBytes( buf,size )
 End Function
 
-Function png_write_fn:Int( png_ptr:Byte Ptr,buf:Byte Ptr,size:Int )
+Function png_write_fn( png_ptr:Byte Ptr,buf:Byte Ptr,size:Int )
 	Local stream:TStream = TStream(png_get_io_ptr(png_ptr))
-	Return stream.WriteBytes( buf,size )
+	stream.WriteBytes( buf,size )
 End Function
 
 Function png_flush_fn( png_ptr:Byte Ptr )
